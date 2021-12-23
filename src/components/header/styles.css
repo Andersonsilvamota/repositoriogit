@@ -7,20 +7,24 @@ body, html{
     height: 100px;
     font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
 }
+
+.baseurl{
+    color: white;
+    font-size: 20px;
+}
 .header{
     height: 200px;
     width: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
-    
     background-color: #3D7AA4;
 }
 
 .header-itens{
     height: 100px;
     width: 100%;
-   
+
     display: flex;
     justify-content: center;
     align-items: center;
@@ -43,8 +47,6 @@ body, html{
 	border: none;
 	text-transform: uppercase;
 	font-weight: 700;
-    
 	color: #555;
-	
 	cursor: pointer;
 }
