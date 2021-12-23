@@ -1,37 +1,53 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { Container } from "../container";
+import api from "../../services/api";
 import "./styles.css";
 
-export function Header(){
-    const [search, setSearch] = useState("");
-    const [newSearch, setNewSearch] = useState("");
+export function Header() {
+  const [search, setSearch] = useState("");
+  const [repos, setRepos] = useState([]);
 
-    console.log(newSearch);
+  const loadRepos = useCallback(
+    (search) => {
+      if (search === undefined) {
+        return
+      } else {
+        api
+          .get(`/users/${search}/repos`)
+          .then((res) => setRepos(res.data))
+          .catch((err) => console.log(err));
+      }
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [search]
+  );
 
-   
-    function buscar(){
-        setSearch(setNewSearch);
-        
+  useEffect(() => {
+    loadRepos();
+  }, [loadRepos]);
 
-    }
+  const submit = () => {
+    loadRepos(search);
+  };
 
-    return(
-        <>
-            <div className="header">
-                
-                <div className="header-itens">
-                    <p className="baseurl">https://github.com/</p>
-                    <input onChange={(e) => setNewSearch(e.target.value)}
-                            value={newSearch} 
-                            className="input" 
-                            type="search" 
-                            placeholder="Digite o usuário...">
-                        
-                    </input>
-                    <button type="submit" className="btn" onClick={buscar} >Buscar</button>
-                </div>
-            </div>
-            <Container search={search}/>
-        </>
-    );
+  return (
+    <>
+      <div className="header">
+        <div className="header-itens">
+          <p className="baseurl">https://github.com/</p>
+          <input
+            placeholder="Digite o nome do usuário"
+            value={search}
+            className="input"
+            type="search"
+            onChange={(event) => setSearch(event.target.value)}
+          ></input>
+          <button type="submit" className="btn" onClick={submit}>
+            Buscar
+          </button>
+        </div>
+      </div>
+      <Container repos={repos} />
+    </>
+  );
 }
